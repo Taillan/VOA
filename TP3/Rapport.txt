@@ -1,0 +1,11 @@
+Questions :
+1 - Nous utilisons la méthode MiniBatchKMeans car plus rapide que K-Means. C'est un des algorithmes de machine learning non supervisés  
+    plus facile à comprendre et à utiliser. 
+Ceci nous permet de le mettre en pratique lors de ce tp de manière.
+
+2- La valeur optimale de N saurait aux alentours de 150 d'après le graphique obtenu.
+
+3- 
+
+4- Un vocabullaire trop specialisé pour seuelemnt 2 catégorie saurait trop précis et donnerais des résultats non pertinents
+   A contrario un vocabulaire trop pauvre ne seras pas precis ne et catégorisera pas bien les images. 
