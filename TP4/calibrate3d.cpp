@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
   Mat fund;
   Size boardSize, imageSize;
   vector<Point2f> points[2];
-  vector<Point3f> lines;
+  vector<Point3f> linesG,linesD;
   const Scalar white = Scalar(255);
 
   bool found;
@@ -82,9 +82,16 @@ int main(int argc, char *argv[])
   fund= findFundamentalMat(points[0],points[1]);
   cout << fund;
 
-  computeCorrespondEpilines(points[0],1,fund,lines);
-  for(size_t i=0; i<lines.size(); i++){
-  line(image[0],cv::Point(0,-lines[i][2]/lines[i][1]),cv::Point(image[0].cols,-(lines[i][2]+lines[i][0]*image[0].cols)/lines[i][1]),
+  computeCorrespondEpilines(points[0],1,fund,linesG); //renvoi (a,b,c) de ax+by+c = 0
+  computeCorrespondEpilines(points[1],2,fund,linesD); //renvoi (a,b,c) de ax+by+c = 0
+  for(size_t i=0; i<linesG.size(); i++){
+  line(image[0],
+    cv::Point(0,-linesD[i].z/linesD[i].y),
+    cv::Point(image[0].cols,-(linesD[i].z+linesD[i].x*image[0].cols)/linesD[i].y),
+      white);
+  line(image[1],
+      cv::Point(0,-linesG[i].z/linesG[i].y),
+      cv::Point(image[1].cols,-(linesG[i].z+linesG[i].x*image[1].cols)/linesG[i].y),
       white);
       }
   namedWindow("gauche", WINDOW_AUTOSIZE );
