@@ -10,9 +10,17 @@
 using namespace cv;
 using namespace std;
 
-void epilignes(InputArray u, InputArray& F, Mat& img)
+void epilignes(InputArray u, InputArray& F, Mat& img,int index)
 {
-  // à compléter
+  const Scalar white = Scalar(255);
+  vector<Point3f> epilines;
+  computeCorrespondEpilines(u,index,F,epilines); //renvoi (a,b,c) de ax+by+c = 0
+  for(size_t i=0; i<epilines.size(); i++){
+  line(img,
+    cv::Point(0,-epilines[i].z/epilines[i].y),
+    cv::Point(img.cols,-(epilines[i].z+epilines[i].x*img.cols)/epilines[i].y),
+      white);
+  }
 }
 
 
@@ -81,19 +89,9 @@ int main(int argc, char *argv[])
     }
   fund= findFundamentalMat(points[0],points[1]);
   cout << fund;
+  epilignes(points[0], fund, image[1],1);
+  epilignes(points[1], fund, image[0],2);
 
-  computeCorrespondEpilines(points[0],1,fund,linesG); //renvoi (a,b,c) de ax+by+c = 0
-  computeCorrespondEpilines(points[1],2,fund,linesD); //renvoi (a,b,c) de ax+by+c = 0
-  for(size_t i=0; i<linesG.size(); i++){
-  line(image[0],
-    cv::Point(0,-linesD[i].z/linesD[i].y),
-    cv::Point(image[0].cols,-(linesD[i].z+linesD[i].x*image[0].cols)/linesD[i].y),
-      white);
-  line(image[1],
-      cv::Point(0,-linesG[i].z/linesG[i].y),
-      cv::Point(image[1].cols,-(linesG[i].z+linesG[i].x*image[1].cols)/linesG[i].y),
-      white);
-      }
   namedWindow("gauche", WINDOW_AUTOSIZE );
   imshow("gauche", image[0]);
   
